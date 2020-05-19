@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NGK_Handin3", "NGK_Handin3.csproj", "{4F63EC5E-F110-48F0-B0FF-9D3E7328D020}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F63EC5E-F110-48F0-B0FF-9D3E7328D020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F63EC5E-F110-48F0-B0FF-9D3E7328D020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F63EC5E-F110-48F0-B0FF-9D3E7328D020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F63EC5E-F110-48F0-B0FF-9D3E7328D020}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19ECC9F6-7E37-4798-B347-4DEADE4503F3}
+	EndGlobalSection
+EndGlobal
