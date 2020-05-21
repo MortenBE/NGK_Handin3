@@ -24,6 +24,7 @@ namespace NGK_Handin3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSignalR();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -71,6 +72,7 @@ namespace NGK_Handin3
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<UpdateHub>("/UpdateHub");
             });
             SeedDate.SeedData(context);
         }
