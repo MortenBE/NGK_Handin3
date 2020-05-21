@@ -49,6 +49,19 @@ namespace NGK_Handin3.Controllers
 
             return weatherObservation;
         }
+        // GET: api/WeatherObservation
+        [HttpGet("{FromDay}/{FromMonth}/{FromYear}/{UntilDay}/{UntilMonth}/{UntilYear}")]
+        public async Task<IEnumerable<WeatherObservation>> GetWeatherObservation(int FromDay, int FromMonth, int FromYear, int UntilDay, int UntilMonth, int UntilYear)
+        {
+            var observations = await _context.WeatherObservations.ToListAsync();
+            var weatherObservation = observations.Where(x => (x.Day >= FromDay) && (x.Month >= FromMonth) && (x.Year >= FromYear) && (x.Day <= UntilDay) && (x.Month <= UntilMonth) && (x.Year <= UntilYear));
+            if (weatherObservation == null)
+            {
+                return null;
+            }
+
+            return weatherObservation;
+        }
 
         // PUT: api/WeatherObservation/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
