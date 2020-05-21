@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using NGK_Handin3.JWTToken;
 using NGK_Handin3.Models;
 using NGK_Handin3.Models.DTOs;
 using static BCrypt.Net.BCrypt;
 
 namespace NGK_Handin3.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -61,21 +67,35 @@ namespace NGK_Handin3.Controllers
         }
 
         [HttpPost("login"), AllowAnonymous]
-        public async Task<ActionResult<UserDto>> Login(UserDto login)
+        public async Task<ActionResult<TokenDto>> Login(UserDto login)
         {
             login.Email = login.Email.ToLower();
-            var user = await _context.Users.Where(u =>
-            u.Email == login.Email).FirstOrDefaultAsync();
-            if (user != null)
+            var user = await _context.Users.Where(u => u.Email == login.Email)
+            .FirstOrDefaultAsync(); if (user != null)
             {
-                var validPwd = Verify(login.Password, user.PwHash);
-                if (validPwd)
+                var validPwd = Verify(login.Password, user.PwHash); if (validPwd)
                 {
-                    return login;
+                    var token = new TokenDto(); token.JWT = GenerateToken(user); return token;
                 }
             }
             ModelState.AddModelError(string.Empty, "Forkert brugernavn eller password");
             return BadRequest(ModelState);
+        }
+
+        private string GenerateToken(User user)
+        {
+            var claims = new Claim[] {
+            new Claim("Email", user.Email),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName), new Claim("UserId", user.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Exp,
+            new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
+        };
+
+            var key = Encoding.UTF8.GetBytes("the secret that needs to be at least 16 characters long for HmacSha256");
+            var token = new JwtSecurityToken(
+            new JwtHeader(new SigningCredentials(
+            new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)), new JwtPayload(claims));
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

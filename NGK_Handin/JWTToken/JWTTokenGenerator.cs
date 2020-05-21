@@ -37,6 +37,5 @@ namespace NGK_Handin3.JWTToken
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }
