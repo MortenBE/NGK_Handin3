@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NGK_Handin3.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace WeatherUnitTest
 {
@@ -19,6 +20,7 @@ namespace WeatherUnitTest
         private WeatherObservationController _uut;
         private DbContextOptions<ApplicationDbContext> _options;
         private ApplicationDbContext _context;
+        private IHubContext<UpdateHub> _hub;
 
         [SetUp]
         public void setup() 
@@ -26,7 +28,7 @@ namespace WeatherUnitTest
 
             _options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "Test").Options;
             _context = new ApplicationDbContext(_options);
-            _uut = new WeatherObservationController(_context);
+            _uut = new WeatherObservationController(_context, _hub);
         }
 
         [Test]
@@ -46,8 +48,6 @@ namespace WeatherUnitTest
                 AtmosphericPressure = 56
             };
 
-            
-
             WeatherObservation weatherObservation2 = new WeatherObservation
             {
                 Id = 2,
@@ -61,8 +61,6 @@ namespace WeatherUnitTest
                 Humidity = 5,
                 AtmosphericPressure = 56
             };
-
-            
 
             WeatherObservation weatherObservation3 = new WeatherObservation
             {
@@ -78,8 +76,6 @@ namespace WeatherUnitTest
                 AtmosphericPressure = 56
             };
             
-
-
             WeatherObservation weatherObservation4 = new WeatherObservation
             {
                 Id = 4,
@@ -99,9 +95,12 @@ namespace WeatherUnitTest
             _context.Add(weatherObservation4);
             _context.SaveChanges();
 
-            var result = (await _uut.GetWeatherObservations()) as ObjectResult;
-
-            Assert.Equals(3, result.Count);
+            var result = _uut.GetWeatherObservations()?.Result.Value;
+            var resultList = result.ToList();
+            Assert.AreEqual(weatherObservation4.Id, resultList[0].Id);
+            Assert.AreEqual(weatherObservation3.Id, resultList[1].Id);
+            Assert.AreEqual(weatherObservation2.Id, resultList[2].Id);
+            Assert.AreEqual(3, resultList.Count);
         }
     }
 }
