@@ -18,25 +18,35 @@ namespace NGK_Handin3.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("NGK_Handin3.Models.Account", b =>
+            modelBuilder.Entity("NGK_Handin3.Models.User", b =>
                 {
-                    b.Property<long>("AccountId")
+                    b.Property<long>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(254)")
+                        .HasMaxLength(254);
 
-                    b.Property<bool>("IsWeatherStation")
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.Property<bool>("IsWeahterStation")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(32)")
+                        .HasMaxLength(32);
+
                     b.Property<string>("PwHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(60)")
+                        .HasMaxLength(60);
 
-                    b.HasKey("AccountId");
+                    b.HasKey("UserId");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("NGK_Handin3.Models.WeatherObservation", b =>
