@@ -20,10 +20,9 @@ namespace NGK_Handin3
         public DbSet<WeatherObservation> WeatherObservations { get; set; }
 
         public DbSet <Account> Accounts { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<WeatherObservation>().Property(e=> e.Date).HasDefaultValueSql("Now()");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
