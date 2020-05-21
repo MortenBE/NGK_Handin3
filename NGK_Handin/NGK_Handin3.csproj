@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200521112150_initial.cs" />
+    <Compile Remove="Migrations\20200521112150_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200521123645_init.cs" />
+    <Compile Remove="Migrations\20200521123645_init.Designer.cs" />
+    <Compile Remove="Migrations\20200521124207_init2.0.cs" />
+    <Compile Remove="Migrations\20200521124207_init2.0.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.4" />
