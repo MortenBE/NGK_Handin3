@@ -37,14 +37,27 @@ namespace NGK_Handin3.Controllers
         }
 
         // GET: api/WeatherObservation
-        [HttpGet("{Date}")]
-        public async Task<ActionResult<WeatherObservation>> GetWeatherObservation(DateTime Date)
+        [HttpGet("{Day}/{Month}/{Year}")]
+        public async Task<IEnumerable<WeatherObservation>> GetWeatherObservation(int Day, int Month, int Year)
         {
-            var weatherObservation = await _context.WeatherObservations.FindAsync(DateTime.Now);
-
+            var observations = await _context.WeatherObservations.ToListAsync();
+            var weatherObservation = observations.Where(x => (x.Day == Day) && (x.Month == Month) && (x.Year == Year));
             if (weatherObservation == null)
             {
-                return NotFound();
+                return null;
+            }
+
+            return weatherObservation;
+        }
+        // GET: api/WeatherObservation
+        [HttpGet("{FromDay}/{FromMonth}/{FromYear}/{UntilDay}/{UntilMonth}/{UntilYear}")]
+        public async Task<IEnumerable<WeatherObservation>> GetWeatherObservation(int FromDay, int FromMonth, int FromYear, int UntilDay, int UntilMonth, int UntilYear)
+        {
+            var observations = await _context.WeatherObservations.ToListAsync();
+            var weatherObservation = observations.Where(x => (x.Day >= FromDay) && (x.Month >= FromMonth) && (x.Year >= FromYear) && (x.Day <= UntilDay) && (x.Month <= UntilMonth) && (x.Year <= UntilYear));
+            if (weatherObservation == null)
+            {
+                return null;
             }
 
             return weatherObservation;
@@ -88,7 +101,7 @@ namespace NGK_Handin3.Controllers
         [HttpPost]
         public async Task<ActionResult<WeatherObservation>> PostWeatherObservation(WeatherObservation weatherObservation)
         {
-            weatherObservation.Date = DateTime.Now;
+          
             _context.WeatherObservations.Add(weatherObservation);
             await _context.SaveChangesAsync();
 

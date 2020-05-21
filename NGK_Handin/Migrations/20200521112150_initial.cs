@@ -27,6 +27,9 @@ namespace NGK_Handin3.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Day = table.Column<int>(nullable: false),
+                    Month = table.Column<int>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
                     LocationName = table.Column<string>(nullable: true),
                     Lat = table.Column<double>(nullable: false),
                     Lon = table.Column<double>(nullable: false),
