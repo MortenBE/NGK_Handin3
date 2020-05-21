@@ -61,7 +61,8 @@ namespace NGK_Handin3
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles(); 
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -74,7 +75,6 @@ namespace NGK_Handin3
                 endpoints.MapControllers();
                 endpoints.MapHub<UpdateHub>("/UpdateHub");
             });
-            SeedDate.SeedData(context);
         }
     }
 }
