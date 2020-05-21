@@ -102,5 +102,147 @@ namespace WeatherUnitTest
             Assert.AreEqual(weatherObservation2.Id, resultList[2].Id);
             Assert.AreEqual(3, resultList.Count);
         }
+
+
+
+        [Test]
+        public async Task get_weatherObservationbyDay()
+        {
+            WeatherObservation weatherObservation5 = new WeatherObservation
+            {
+                Id = 5,
+                Day = 24,
+                Month = 3,
+                Year = 2020,
+                LocationName = "Holsterbro",
+                Lat = 22.77,
+                Lon = 44.77,
+                Temperature = 23,
+                Humidity = 5,
+                AtmosphericPressure = 56
+            };
+
+            WeatherObservation weatherObservation6 = new WeatherObservation
+            {
+                Id = 6,
+                Day = 31,
+                Month = 5,
+                Year = 2004,
+                LocationName = "Skanderborg",
+                Lat = 80.30,
+                Lon = 90.11,
+                Temperature = 23,
+                Humidity = 5,
+                AtmosphericPressure = 56
+            };
+
+            WeatherObservation weatherObservation7 = new WeatherObservation
+            {
+                Id = 7,
+                Day = 23,
+                Month = 1,
+                Year = 2020,
+                LocationName = "Randers",
+                Lat = 40.22,
+                Lon = 88.33,
+                Temperature = 16,
+                Humidity = 5,
+                AtmosphericPressure = 56
+            };
+
+            WeatherObservation weatherObservation8 = new WeatherObservation
+            {
+                Id = 8,
+                Day = 14,
+                Month = 2,
+                Year = 2020,
+                LocationName = "Randers",
+                Lat = 22.55,
+                Lon = 33.76,
+                Temperature = 10,
+                Humidity = 1,
+                AtmosphericPressure = 20
+            };
+            _context.Add(weatherObservation5);
+            _context.Add(weatherObservation6);
+            _context.Add(weatherObservation7);
+            _context.Add(weatherObservation8);
+            _context.SaveChanges();
+
+           var result = _uut.GetWeatherObservationbyday(31,5,2004)?.Result;
+           var resultToList = result.ToList();
+            
+           Assert.AreEqual(weatherObservation6.Id, resultToList[0].Id);
+        }
+
+        [Test]
+        public async Task get_weatherObservationById()
+        {
+            WeatherObservation weatherObservation5 = new WeatherObservation
+            {
+                Id = 9,
+                Day = 24,
+                Month = 3,
+                Year = 2020,
+                LocationName = "Holsterbro",
+                Lat = 22.77,
+                Lon = 44.77,
+                Temperature = 23,
+                Humidity = 5,
+                AtmosphericPressure = 56
+            };
+
+            WeatherObservation weatherObservation6 = new WeatherObservation
+            {
+                Id = 10,
+                Day = 31,
+                Month = 5,
+                Year = 2004,
+                LocationName = "Skanderborg",
+                Lat = 80.30,
+                Lon = 90.11,
+                Temperature = 23,
+                Humidity = 5,
+                AtmosphericPressure = 56
+            };
+
+            WeatherObservation weatherObservation7 = new WeatherObservation
+            {
+                Id = 11,
+                Day = 23,
+                Month = 1,
+                Year = 2020,
+                LocationName = "Randers",
+                Lat = 40.22,
+                Lon = 88.33,
+                Temperature = 16,
+                Humidity = 5,
+                AtmosphericPressure = 56
+            };
+
+            WeatherObservation weatherObservation8 = new WeatherObservation
+            {
+                Id = 12,
+                Day = 14,
+                Month = 2,
+                Year = 2020,
+                LocationName = "Randers",
+                Lat = 22.55,
+                Lon = 33.76,
+                Temperature = 10,
+                Humidity = 1,
+                AtmosphericPressure = 20
+            };
+            _context.Add(weatherObservation5);
+            _context.Add(weatherObservation6);
+            _context.Add(weatherObservation7);
+            _context.Add(weatherObservation8);
+            _context.SaveChanges();
+
+            var result = _uut.GetWeatherObservation(10)?.Result.Value;
+            
+
+            Assert.AreEqual(10, result.Id);
+        }
     }
 }
