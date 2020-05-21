@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NGK_Handin3;
 using NGK_Handin3.Models;
+using Microsoft.AspNetCore.SignalR;
+using NGK_Handin3.Hubs;
+
 
 namespace NGK_Handin3.Controllers
 {
@@ -16,14 +18,17 @@ namespace NGK_Handin3.Controllers
     public class WeatherObservationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<UpdateHub> _updateHubContext;
 
-        public WeatherObservationController(ApplicationDbContext context)
+
+        public WeatherObservationController(ApplicationDbContext context, IHubContext<UpdateHub> updateHubContext)
         {
             _context = context;
+            _updateHubContext = updateHubContext;
         }
 
         // GET: api/WeatherObservation
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public async Task<ActionResult<IEnumerable<WeatherObservation>>> GetWeatherObservations()
         {
             var observations = await _context.WeatherObservations.ToListAsync();
@@ -36,10 +41,23 @@ namespace NGK_Handin3.Controllers
             }
             return returnlist;
         }
+        [HttpGet("{id}"), AllowAnonymous]
+        public async Task<ActionResult<WeatherObservation>> GetWeatherObservation(int id)
+        {
+            var weatherObservation = await _context.WeatherObservations.FindAsync(id);
+
+            if (weatherObservation == null)
+            {
+                return NotFound();
+            }
+
+            return weatherObservation;
+        }
+
 
         // GET: api/WeatherObservation
-        [HttpGet("{Day}/{Month}/{Year}")]
-        public async Task<IEnumerable<WeatherObservation>> GetWeatherObservation(int Day, int Month, int Year)
+        [HttpGet("{Day}/{Month}/{Year}"), AllowAnonymous]
+        public async Task<IEnumerable<WeatherObservation>> GetWeatherObservationbyday(int Day, int Month, int Year)
         {
             var observations = await _context.WeatherObservations.ToListAsync();
             var weatherObservation = observations.Where(x => (x.Day == Day) && (x.Month == Month) && (x.Year == Year));
@@ -99,7 +117,6 @@ namespace NGK_Handin3.Controllers
         // POST: api/WeatherObservation
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize(Roles = "WeatherStation")]
         [HttpPost]
         public async Task<ActionResult<WeatherObservation>> PostWeatherObservation(WeatherObservation weatherObservation)
         {
