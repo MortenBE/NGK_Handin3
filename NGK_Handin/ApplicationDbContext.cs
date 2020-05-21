@@ -12,11 +12,18 @@ namespace NGK_Handin3
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
-        public DbSet<WeatherObservation> WeatherObservations { get; set; }        
+        public ApplicationDbContext()
+        { }
+
+
+
+        public DbSet<WeatherObservation> WeatherObservations { get; set; }
+
+        public DbSet <Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<WeatherObservation>().Property(e=> e.Date).HasDefaultValueSql("Now()");
         }
     }
 }

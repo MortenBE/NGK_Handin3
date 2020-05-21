@@ -8,8 +8,8 @@ namespace NGK_Handin3.Models
 {
     public class Account
     {
-        //[Key]
-        //public long AccountId { get; set; }       
+        [Key]
+        public long AccountId { get; set; }       
         public string Email { get; set; }        
         public string PwHash { get; set; }
         public bool IsWeatherStation { get; set; }
