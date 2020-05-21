@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NGK_Handin3.JWTToken;
 using NGK_Handin3.Models;
@@ -24,10 +25,13 @@ namespace NGK_Handin3.Controllers
     {
         private readonly ApplicationDbContext _context;
         const int BcryptWorkfactor = 10;
+        private readonly AppSettings _appSettings;
 
-        public AccountController(ApplicationDbContext context)
+
+        public AccountController(ApplicationDbContext context, IOptions<AppSettings> appSettings)
         {
-            _context = context;            
+            _context = context;
+            _appSettings = appSettings.Value;
         }
 
         [HttpPost("register"), AllowAnonymous]
@@ -91,7 +95,7 @@ namespace NGK_Handin3.Controllers
             new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
         };
 
-            var key = Encoding.UTF8.GetBytes("the secret that needs to be at least 16 characters long for HmacSha256");
+            var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);
             var token = new JwtSecurityToken(
             new JwtHeader(new SigningCredentials(
             new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)), new JwtPayload(claims));

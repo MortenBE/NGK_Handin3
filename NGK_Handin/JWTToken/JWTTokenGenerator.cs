@@ -31,7 +31,7 @@ namespace NGK_Handin3.JWTToken
 
             var token = new JwtSecurityToken(
                  new JwtHeader(new SigningCredentials(
-                      new SymmetricSecurityKey(Encoding.UTF8.GetBytes("RQIN0XQfSYQGCoi")),
+                      new SymmetricSecurityKey(Encoding.UTF8.GetBytes("the secret that needs to be at least 16 characeters long for HmacSha256")),
                       SecurityAlgorithms.HmacSha256Signature)),
                       new JwtPayload(claims));
 
