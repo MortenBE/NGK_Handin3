@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NGK_Handin3.Models;
+using Microsoft.AspNetCore.SignalR;
+using NGK_Handin3.Hubs;
+
 
 namespace NGK_Handin3.Controllers
 {
@@ -15,10 +18,13 @@ namespace NGK_Handin3.Controllers
     public class WeatherObservationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<UpdateHub> _updateHubContext;
 
-        public WeatherObservationController(ApplicationDbContext context)
+
+        public WeatherObservationController(ApplicationDbContext context, IHubContext<UpdateHub> updateHubContext)
         {
             _context = context;
+            _updateHubContext = updateHubContext;
         }
 
         // GET: api/WeatherObservation
