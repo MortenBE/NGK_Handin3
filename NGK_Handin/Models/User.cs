@@ -18,7 +18,7 @@ namespace NGK_Handin3.Models
         public string Email { get; set; }
         [MaxLength(60)]
         public string PwHash { get; set; }
-        public bool IsWeahterStation { get; set; }
+        public bool IsWeatherStation { get; set; }
 
     }
 }
