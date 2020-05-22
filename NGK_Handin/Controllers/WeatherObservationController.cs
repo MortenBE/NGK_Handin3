@@ -14,7 +14,7 @@ using NGK_Handin3.Hubs;
 namespace NGK_Handin3.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class WeatherObservationController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -69,7 +69,7 @@ namespace NGK_Handin3.Controllers
             return weatherObservation;
         }
         // GET: api/WeatherObservation
-        [HttpGet("{FromDay}/{FromMonth}/{FromYear}/{UntilDay}/{UntilMonth}/{UntilYear}")]
+        [HttpGet("{FromDay}/{FromMonth}/{FromYear}/{UntilDay}/{UntilMonth}/{UntilYear}"), AllowAnonymous]
         public async Task<IEnumerable<WeatherObservation>> GetWeatherObservation(int FromDay, int FromMonth, int FromYear, int UntilDay, int UntilMonth, int UntilYear)
         {
             var observations = await _context.WeatherObservations.ToListAsync();
