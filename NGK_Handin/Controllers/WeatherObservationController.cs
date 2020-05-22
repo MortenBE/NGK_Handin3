@@ -123,7 +123,7 @@ namespace NGK_Handin3.Controllers
           
             _context.WeatherObservations.Add(weatherObservation);
             await _context.SaveChangesAsync();
-            await _updateHubContext.Clients.All.SendAsync("Observation", weatherObservation);
+            await _updateHubContext.Clients.All.SendAsync("NewData", weatherObservation);
 
             return CreatedAtAction("GetWeatherObservation", new { id = weatherObservation.Id }, weatherObservation);
         }
